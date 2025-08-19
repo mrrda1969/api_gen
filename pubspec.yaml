@@ -3,7 +3,6 @@ description:
   A simple Dart code generator that creates model classes (with fromJson/toJson)
   from a JSON schema, saving time on boilerplate in Flutter/Dart projects.
 version: 0.0.1
-publish_to: none
 repository: https://github.com/mrrda1969/api_gen
 issue_tracker: https://github.com/mrrda1969/api_gen/issues
 homepage: https://github.com/mrrda1969/api_gen
