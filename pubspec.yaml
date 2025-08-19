@@ -1,0 +1,16 @@
+name: api_gen
+description: A simple code generator for Dart models from JSON schema.
+version: 1.0.0
+publish_to: none
+repository: https://github.com/mrrda1969/api_gen
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  args: ^2.7.0
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
