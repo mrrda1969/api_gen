@@ -1,3 +1,4 @@
-## 1.0.0
+## 0.0.1
 
-- Initial version.
+- Initial release
+- Generate Dart models (`fromJson`, `toJson`) from JSON schema
