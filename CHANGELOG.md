@@ -1,4 +1,4 @@
-## 0.0.1
+## 0.0.2
 
-- Initial release
-- Generate Dart models (`fromJson`, `toJson`) from JSON schema
+- v2 of api_gen
+- case handling for data types and classes
