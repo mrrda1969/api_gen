@@ -80,7 +80,7 @@ dart main.dart
 
 ## 5. Output
 
-After running either method, you will find generated Dart model files in the `example/models` directory.
+After running either method, you will find generated Dart model files in the `lib/models` directory of your project.
 
 ---
 
