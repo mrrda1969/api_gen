@@ -1,22 +1,34 @@
-# Example Usage for `api_gen`
+# api_gen Example
 
-This example demonstrates how to use the `api_gen` package to generate Dart models from an OpenAPI-style JSON schema, both via the command-line interface (CLI) and programmatically in Dart.
+This example demonstrates how to use the `api_gen` package to generate Dart model classes from a JSON schema, both via the command-line interface (CLI) and programmatically in Dart.
 
 ---
 
-## 1. Project Structure
+## ✨ Features
+
+- Generate Dart model classes from a JSON schema
+- Automatic `fromJson` and `toJson` methods
+- Differentiates between **required** and **optional** fields
+- Auto-capitalizes class names and normalizes Dart types
+- Supports **nested models** with correct imports
+- CLI and programmatic usage
+- Output directory is created automatically
+
+---
+
+## 📁 Project Structure
 
 ```
 example/
   api.json           # Your API schema
   lib/
     main.dart        # Dart usage example
-  models/            # Generated models (output)
+    models/          # Generated models (output)
 ```
 
 ---
 
-## 2. Prepare Your API Schema
+## 📝 Prepare Your Schema
 
 Place your API schema in `example/api.json`. Example:
 
@@ -25,30 +37,40 @@ Place your API schema in `example/api.json`. Example:
   "user": {
     "id": "int",
     "name": "String",
-    "email": { "type": "String", "required": false }
+    "email": { "type": "String", "required": false },
+    "profile": {
+      "type": "Profile",
+      "required": true
+    }
+  },
+  "profile": {
+    "age": "int",
+    "bio": { "type": "String", "required": false }
   }
 }
 ```
 
 ---
 
-## 3. Using the CLI
+## 🚀 Generate Models via CLI
 
-You can generate Dart models from your schema using the CLI:
+From the root of your project, run:
 
-```sh
-# From the root of your project
-# Usage: dart api_gen -i <input_schema> -o <output_dir>
-dart run api_gen -i api.json -o lib/models
-```
+````sh
+# Usage: api_gen --schema <input_schema> --dir <output_dir>
+api_gen --schema api.json --dir lib/models
 
-This will generate Dart model files in the `lib/models` directory of your project.
+Options:
+
+--schema / -s: Path to schema JSON file (required)
+
+--dir / -d: Output directory for generated models (default: lib/models)
 
 ---
 
-## 4. Using the Dart API
+## 🧑‍💻 Generate Models Programmatically
 
-You can also generate models programmatically in Dart. See `example/lib/main.dart`:
+You can also generate models in Dart code. See `example/lib/main.dart`:
 
 ```dart
 import 'dart:convert';
@@ -56,18 +78,13 @@ import 'dart:io';
 import 'package:api_gen/api_gen.dart';
 
 void main() async {
-  // Load schema from api.json
   final schemaFile = File('../api.json');
-  final schema =
-      jsonDecode(await schemaFile.readAsString()) as Map<String, dynamic>;
-
-  // Generate models into models/
+  final schema = jsonDecode(await schemaFile.readAsString()) as Map<String, dynamic>;
   final generator = DartModelGenerator('models');
   generator.generate(schema);
-
-  print('✅ Example models generated in models');
+  print('✅ Models generated!');
 }
-```
+````
 
 Run this example:
 
@@ -78,14 +95,14 @@ dart main.dart
 
 ---
 
-## 5. Output
+## 📦 Output
 
 After running either method, you will find generated Dart model files in the `lib/models` directory of your project.
 
 ---
 
-## 6. Notes
+## 📝 Notes
 
 - Ensure your schema is valid JSON and follows the expected structure.
 - The output directory will be created if it does not exist.
-- For more advanced usage, see the main package documentation.
+- For more advanced usage, see the main [package documentation](../README.md).
