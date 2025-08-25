@@ -5,16 +5,21 @@ import 'package:api_gen/generators/dart_model_generator.dart';
 
 void main(List<String> arguments) async {
   final parser = ArgParser()
-    ..addOption('input', abbr: 'i', help: 'Path to JSON schema')
-    ..addOption('output', abbr: 'o', help: 'Output folder');
+    ..addOption(
+      'schema',
+      abbr: 's',
+      help: 'Path to JSON schema',
+      mandatory: true,
+    )
+    ..addOption('dir', abbr: 'd', help: 'Output directory');
 
   final args = parser.parse(arguments);
 
-  final inputFile = args['input'];
-  final outputDir = args['output'];
+  final inputFile = args['schema'];
+  final outputDir = args['dir'];
 
   if (inputFile == null || outputDir == null) {
-    print('Usage: dart run api_gen -i api.json -o lib/models');
+    print('Usage: dart run api_gen -s api.json -d lib/models');
     exit(1);
   }
 
