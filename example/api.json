@@ -11,6 +11,24 @@
     "email": {
       "type": "string",
       "required": false
+    },
+    "profile": {
+      "type": "profile",
+      "required": false
+    }
+  },
+  "profile": {
+    "id": {
+      "type": "int",
+      "required": true
+    },
+    "bio": {
+      "type": "string",
+      "required": false
+    },
+    "age": {
+      "type": "int",
+      "required": false
     }
   }
 }
