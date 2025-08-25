@@ -1,4 +1,5 @@
-## 0.0.2
+## 0.0.3
 
-- v2 of api_gen
-- case handling for data types and classes
+- v3 of api_gen
+- support for nested models
+- CLI globa executable support
