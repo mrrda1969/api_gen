@@ -56,7 +56,7 @@ Place your API schema in `example/api.json`. Example:
 
 From the root of your project, run:
 
-````sh
+```sh
 # Usage: api_gen --schema <input_schema> --dir <output_dir>
 api_gen --schema api.json --dir lib/models
 
@@ -65,6 +65,7 @@ Options:
 --schema / -s: Path to schema JSON file (required)
 
 --dir / -d: Output directory for generated models (default: lib/models)
+```
 
 ---
 
@@ -84,7 +85,7 @@ void main() async {
   generator.generate(schema);
   print('✅ Models generated!');
 }
-````
+```
 
 Run this example:
 
