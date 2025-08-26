@@ -40,21 +40,23 @@ dart pub global activate api_gen
 
 Create a JSON schema file, e.g. api.json:
 
+```json
 {
-"user": {
-"id": "int",
-"name": "String",
-"email": { "type": "String", "required": false },
-"profile": {
-"type": "Profile",
-"required": true
+  "user": {
+    "id": "int",
+    "name": "String",
+    "email": { "type": "String", "required": false },
+    "profile": {
+      "type": "Profile",
+      "required": true
+    }
+  },
+  "profile": {
+    "age": "int",
+    "bio": { "type": "String", "required": false }
+  }
 }
-},
-"profile": {
-"age": "int",
-"bio": { "type": "String", "required": false }
-}
-}
+```
 
 # Generate Models via CLI
 
