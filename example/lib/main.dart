@@ -11,6 +11,4 @@ void main() async {
   // Generate models into models/
   final generator = DartModelGenerator('models');
   generator.generate(schema);
-
-  print('✅ Example models generated in models');
 }
