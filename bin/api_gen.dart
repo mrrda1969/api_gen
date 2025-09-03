@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:args/args.dart';
-import 'package:api_gen/generators/dart_model_generator.dart';
+import 'package:api_gen/api_gen.dart';
 
 void main(List<String> arguments) async {
   final parser = ArgParser()
@@ -26,8 +26,20 @@ void main(List<String> arguments) async {
   final jsonStr = await File(inputFile).readAsString();
   final schema = jsonDecode(jsonStr) as Map<String, dynamic>;
 
-  final generator = DartModelGenerator(outputDir);
-  generator.generate(schema);
+  // Detect if schema is standard JSON Schema or legacy format
+  bool isStandardJsonSchema(Map<String, dynamic> s) {
+    return s.containsKey('\$defs') ||
+        s.containsKey('definitions') ||
+        (s['type'] == 'object' && s.containsKey('properties'));
+  }
 
-  print('✅ Models generated in $outputDir');
+  if (isStandardJsonSchema(schema)) {
+    final generator = ModelGenerator(outputDir);
+    generator.generate(schema);
+    print('✅ Models generated in $outputDir (standard JSON Schema)');
+  } else {
+    final generator = DartModelGenerator(outputDir);
+    generator.generate(schema);
+    print('✅ Models generated in $outputDir (legacy format)');
+  }
 }
