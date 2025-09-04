@@ -1,100 +1,114 @@
 import 'dart:io';
-
 import 'package:api_gen/legacy/case_helpers.dart';
+import 'package:api_gen/src/exception/exception.dart';
+import 'package:api_gen/src/logger/logger.dart';
 
 class DartModelGenerator {
   final String outputDir;
+  final Logger _logger;
 
-  DartModelGenerator(this.outputDir);
+  DartModelGenerator(this.outputDir) : _logger = Logger('DartModelGenerator');
 
   void generate(Map<String, dynamic> schema) {
-    final dir = Directory(outputDir);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-    }
-
-    schema.forEach((className, fields) {
-      final buffer = StringBuffer();
-      final capClassName = capitalize(className);
-
-      // Track imports
-      final imports = <String>{};
-
-      // === Collect imports ===
-      (fields as Map<String, dynamic>).forEach((name, def) {
-        final type = _getType(def, schema);
-        if (!_isPrimitive(type) && type != capClassName) {
-          imports.add("import '${type.toLowerCase()}.dart';");
-        }
-      });
-
-      // Write imports at top
-      for (var imp in imports) {
-        buffer.writeln(imp);
+    try {
+      final dir = Directory(outputDir);
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true);
       }
-      if (imports.isNotEmpty) buffer.writeln();
 
-      // === Class Definition ===
-      buffer.writeln('class $capClassName {');
+      schema.forEach((className, fields) {
+        final buffer = StringBuffer();
+        final capClassName = capitalize(className);
 
-      // === Fields ===
-      fields.forEach((name, def) {
-        final type = _getType(def, schema);
-        final required = _isRequired(def);
-        buffer.writeln('  final $type${required ? "" : "?"} $name;');
+        // Track imports
+        final imports = <String>{};
+
+        // === Collect imports ===
+        (fields as Map<String, dynamic>).forEach((name, def) {
+          final type = _getType(def, schema);
+          if (!_isPrimitive(type) && type != capClassName) {
+            imports.add("import '${type.toLowerCase()}.dart';");
+          }
+        });
+
+        // Write imports at top
+        for (var imp in imports) {
+          buffer.writeln(imp);
+        }
+        if (imports.isNotEmpty) buffer.writeln();
+
+        // === Class Definition ===
+        buffer.writeln('class $capClassName {');
+
+        // === Fields ===
+        fields.forEach((name, def) {
+          final type = _getType(def, schema);
+          final required = _isRequired(def);
+          buffer.writeln('  final $type${required ? "" : "?"} $name;');
+        });
+
+        buffer.writeln();
+        // === Constructor ===
+        buffer.writeln('  $capClassName({');
+        fields.forEach((name, def) {
+          final required = _isRequired(def);
+          buffer.writeln('    ${required ? "required " : ""}this.$name,');
+        });
+        buffer.writeln('  });\n');
+
+        // === fromJson ===
+        buffer.writeln(
+          '  factory $capClassName.fromJson(Map<String, dynamic> json) {',
+        );
+        buffer.writeln('    return $capClassName(');
+        fields.forEach((name, def) {
+          final type = _getType(def, schema);
+          final required = _isRequired(def);
+
+          if (_isPrimitive(type)) {
+            buffer.writeln(
+              "      $name: json['$name'] as $type${required ? '' : '?'},",
+            );
+          } else {
+            buffer.writeln(
+              "      $name: json['$name'] != null ? $type.fromJson(json['$name']) : null,",
+            );
+          }
+        });
+        buffer.writeln('    );');
+        buffer.writeln('  }\n');
+
+        // === toJson ===
+        buffer.writeln('  Map<String, dynamic> toJson() {');
+        buffer.writeln('    return {');
+        fields.forEach((name, def) {
+          final type = _getType(def, schema);
+          if (_isPrimitive(type)) {
+            buffer.writeln("      '$name': $name,");
+          } else {
+            buffer.writeln("      '$name': $name?.toJson(),");
+          }
+        });
+        buffer.writeln('    };');
+        buffer.writeln('  }');
+
+        buffer.writeln('}');
+
+        // === Save file ===
+        final file = File('$outputDir/${className.toLowerCase()}.dart');
+        file.writeAsStringSync(buffer.toString());
       });
-
-      buffer.writeln();
-      // === Constructor ===
-      buffer.writeln('  $capClassName({');
-      fields.forEach((name, def) {
-        final required = _isRequired(def);
-        buffer.writeln('    ${required ? "required " : ""}this.$name,');
-      });
-      buffer.writeln('  });\n');
-
-      // === fromJson ===
-      buffer.writeln(
-        '  factory $capClassName.fromJson(Map<String, dynamic> json) {',
+    } on ApiGenException catch (e, st) {
+      _logger.error('ApiGenException: ${e.message}', e, st);
+      rethrow;
+    } catch (e, st) {
+      final ex = CodeGenerationException(
+        'Unknown error in legacy model generation',
+        e,
       );
-      buffer.writeln('    return $capClassName(');
-      fields.forEach((name, def) {
-        final type = _getType(def, schema);
-        final required = _isRequired(def);
-
-        if (_isPrimitive(type)) {
-          buffer.writeln(
-            "      $name: json['$name'] as $type${required ? '' : '?'},",
-          );
-        } else {
-          buffer.writeln(
-            "      $name: json['$name'] != null ? $type.fromJson(json['$name']) : null,",
-          );
-        }
-      });
-      buffer.writeln('    );');
-      buffer.writeln('  }\n');
-
-      // === toJson ===
-      buffer.writeln('  Map<String, dynamic> toJson() {');
-      buffer.writeln('    return {');
-      fields.forEach((name, def) {
-        final type = _getType(def, schema);
-        if (_isPrimitive(type)) {
-          buffer.writeln("      '$name': $name,");
-        } else {
-          buffer.writeln("      '$name': $name?.toJson(),");
-        }
-      });
-      buffer.writeln('    };');
-      buffer.writeln('  }');
-
-      buffer.writeln('}');
-
-      // === Save file ===
-      final file = File('$outputDir/${className.toLowerCase()}.dart');
-      file.writeAsStringSync(buffer.toString());
-    });
+      _logger.error('Unknown error: $e', e, st);
+      throw ex;
+    }
   }
 
   /// Extract type from schema field
