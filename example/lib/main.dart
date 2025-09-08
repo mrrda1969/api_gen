@@ -1,14 +1,17 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:api_gen/api_gen.dart';
 
 void main() async {
-  // Load schema from api.json
-  final schemaFile = File('../api.json');
-  final schema =
-      jsonDecode(await schemaFile.readAsString()) as Map<String, dynamic>;
+  final client = ApiGenClient();
 
-  // Generate models into models/
-  final generator = DartModelGenerator('models');
-  generator.generate(schema);
+  // Generate models from api.json file
+  final result = await client.generateFromFile('api.json', 'models');
+
+  if (result.isSuccessful) {
+    print('✅ Models generated successfully!');
+  } else {
+    final failure = result as Failure<void>;
+    print('❌ Error: ${failure.exception}');
+    exit(1);
+  }
 }
