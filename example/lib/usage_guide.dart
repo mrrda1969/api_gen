@@ -10,7 +10,10 @@ void main() async {
 
   // Method 1: Generate from file (recommended for most cases)
   print('Method 1: Generate from file');
-  final result1 = await client.generateFromFile('api.json', 'output_models');
+  final result1 = await client.generateFromFile(
+    'api.json',
+    'lib/models/output_models',
+  );
   handleResult(result1, 'File generation');
 
   // Method 2: Generate from schema Map (for programmatic use)
@@ -18,7 +21,10 @@ void main() async {
   final schema = {
     'User': {'id': 'String', 'name': 'String', 'email': 'String'},
   };
-  final result2 = await client.generateFromSchema(schema, 'output_models2');
+  final result2 = await client.generateFromSchema(
+    schema,
+    'lib/models/output_models2',
+  );
   handleResult(result2, 'Schema Map generation');
 
   // Method 3: Generate from JSON string
@@ -26,7 +32,7 @@ void main() async {
   const jsonString = '{"Product": {"id": "String", "name": "String"}}';
   final result3 = await client.generateFromJsonString(
     jsonString,
-    'output_models3',
+    'lib/models/output_models3',
   );
   handleResult(result3, 'JSON string generation');
 
