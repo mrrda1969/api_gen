@@ -105,7 +105,7 @@ class DartModelGenerator {
         try {
           final type = _getType(def, schema);
           if (!_isPrimitive(type) && type != capClassName) {
-            imports.add("import 'type.toLowerCase()}.dart';");
+            imports.add("import '${type.toLowerCase()}}.dart';");
           }
         } catch (e) {
           throw CodeGenerationException('Failed to process field: $name', e);
