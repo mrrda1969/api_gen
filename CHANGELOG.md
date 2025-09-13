@@ -1,3 +1,7 @@
+## 0.0.4+1
+
+- updated dart doc comments on all files
+
 ## 0.0.4
 
 - ✨ Added `ApiGenClient` for high-level programmatic usage
