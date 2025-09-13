@@ -1,6 +1,11 @@
 import 'package:api_gen/src/defs/property_definition.dart';
 import 'package:api_gen/src/helpers/helpers.dart';
 
+/// Parses a property from a JSON schema and returns a [PropertyDefinition].
+///
+/// [name] is the property name.
+/// [schema] is the property schema map.
+/// [isRequired] indicates if the property is required.
 PropertyDefinition parseProperty(
   String name,
   Map<String, dynamic> schema,

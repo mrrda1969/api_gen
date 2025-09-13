@@ -2,10 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:api_gen/api_gen.dart';
-import 'package:api_gen/src/exception/exception.dart';
 import 'package:api_gen/src/logger/logger.dart';
-import 'package:api_gen/src/result/result.dart';
 
+import 'package:api_gen/src/legacy/dart_model_generator.dart';
+
+/// Entry point for the api_gen command-line tool.
+///
+/// This CLI tool generates Dart models from a JSON schema file. It supports both
+/// standard JSON Schema and legacy formats. Use the `-s` option to specify the schema file
+/// and the `-d` option to specify the output directory.
+///
+/// Example usage:
+/// ```sh
+/// dart run bin/api_gen.dart -s api.json -d lib/models
+/// ```
 void main(List<String> arguments) async {
   final logger = Logger('api_gen_cli');
   final parser = ArgParser()

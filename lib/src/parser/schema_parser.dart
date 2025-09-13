@@ -2,6 +2,9 @@ import 'package:api_gen/src/defs/model_definition.dart';
 import 'package:api_gen/src/helpers/helpers.dart';
 import 'package:api_gen/src/parser/model_parser.dart';
 
+/// Parses a JSON schema and returns a map of model names to [ModelDefinition]s.
+///
+/// Supports standard JSON Schema with `$defs`, root-level `definitions`, and direct object definitions.
 Map<String, ModelDefinition> parseSchema(Map<String, dynamic> schema) {
   final models = <String, ModelDefinition>{};
 

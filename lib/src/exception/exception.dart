@@ -1,3 +1,6 @@
+/// The base exception type for all errors thrown by the api_gen package.
+///
+/// Contains a [message] describing the error and an optional [cause].
 abstract class ApiGenException implements Exception {
   final String message;
   final Object? cause;
@@ -9,8 +12,7 @@ abstract class ApiGenException implements Exception {
       'ApiGenException: $message${cause != null ? ' (Caused by: $cause)' : ''}';
 }
 
-/// Schema validation errors
-
+/// Exception thrown when schema validation fails.
 class SchemaValidationException extends ApiGenException {
   const SchemaValidationException(super.message, [super.cause]);
 
@@ -18,7 +20,7 @@ class SchemaValidationException extends ApiGenException {
   String toString() => 'SchemaValidationException: $message';
 }
 
-/// File I/O related errors
+/// Exception thrown for file I/O related errors.
 class FileOperationException extends ApiGenException {
   const FileOperationException(super.message, [super.cause]);
 
@@ -26,7 +28,7 @@ class FileOperationException extends ApiGenException {
   String toString() => 'FileOperationException: $message';
 }
 
-/// Code generation errors
+/// Exception thrown for code generation errors.
 class CodeGenerationException extends ApiGenException {
   const CodeGenerationException(super.message, [super.cause]);
 
@@ -34,7 +36,7 @@ class CodeGenerationException extends ApiGenException {
   String toString() => 'CodeGenerationException: $message';
 }
 
-/// JSON parsing errors
+/// Exception thrown for JSON parsing errors.
 class JsonParsingException extends ApiGenException {
   const JsonParsingException(super.message, [super.cause]);
 

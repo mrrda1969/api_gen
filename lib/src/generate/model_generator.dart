@@ -4,18 +4,37 @@ import 'package:api_gen/src/exception/exception.dart';
 import 'package:api_gen/src/logger/logger.dart';
 import 'package:api_gen/src/result/result.dart';
 
+/// A generator for creating Dart model classes from schema definitions.
+///
+/// The [ModelGenerator] takes a schema (as a [Map<String, dynamic>]) and generates
+/// Dart model files in the specified [outputDir]. It handles schema parsing, error handling,
+/// and file generation, supporting nested models and various property types.
+///
+/// Example usage:
+/// ```dart
+/// final generator = ModelGenerator('lib/models');
+/// final result = generator.generate(schemaMap);
+/// if (result.isSuccess) {
+///   print('Models generated successfully!');
+/// }
+/// ```
+///
+/// Throws [SchemaValidationException], [FileOperationException], or [CodeGenerationException]
+/// for various error conditions.
 class ModelGenerator {
   final String outputDir;
   final Logger _logger;
 
   ModelGenerator(this.outputDir) : _logger = Logger('ModelGenerator');
 
-  /// Generates a model from a schema
+  /// Generates Dart model files from a schema definition.
   ///
-  /// [schema] - The schema as a [Map<String, dynamic>]
+  /// Takes a [schema] as a [Map<String, dynamic>] and writes model files to [outputDir].
+  /// Returns a [Result] indicating success or failure.
   ///
-  /// Returns a [Result] indicating success or failure
-  ///
+  /// Throws [SchemaValidationException] if the schema is invalid.
+  /// Throws [FileOperationException] if output directory or file operations fail.
+  /// Throws [CodeGenerationException] for code generation errors.
   Result<void> generate(Map<String, dynamic> schema) {
     try {
       // Validate input schema
@@ -70,12 +89,10 @@ class ModelGenerator {
     }
   }
 
-  /// Parses a schema with error handling
+  /// Parses a schema with error handling.
   ///
-  /// [schema] - The schema as a [Map<String, dynamic>]
-  ///
-  /// Returns the parsed schema as a [Map<String, dynamic>]
-
+  /// Returns the parsed schema as a [Map<String, dynamic>].
+  /// Throws [SchemaValidationException] if parsing fails.
   Map<String, dynamic> _parseSchemaWithErrorHandling(
     Map<String, dynamic> schema,
   ) {
@@ -92,11 +109,11 @@ class ModelGenerator {
     }
   }
 
-  /// Generates a model
+  /// Generates a Dart model file for a single model definition.
   ///
-  /// [modelName] - The name of the model
-  /// [model] - The model as a [dynamic]
-
+  /// [modelName] is the name of the model.
+  /// [model] is the model definition object.
+  /// Throws [CodeGenerationException] for errors in code generation.
   void _generateModel(String modelName, dynamic model) {
     try {
       final buffer = StringBuffer();
@@ -250,11 +267,11 @@ class ModelGenerator {
     }
   }
 
-  /// Saves a model file
+  /// Saves the generated Dart model file to disk.
   ///
-  /// [className] - The name of the class
-  /// [content] - The content of the file
-
+  /// [className] is the name of the class.
+  /// [content] is the Dart code to write.
+  /// Throws [FileOperationException] if writing fails.
   void _saveModelFile(String className, String content) {
     try {
       final filePath = '$outputDir/${className.toLowerCase()}.dart';
@@ -278,12 +295,10 @@ class ModelGenerator {
     }
   }
 
-  /// Checks if a type is a primitive type
+  /// Checks if a type is a Dart primitive type.
   ///
-  /// [type] - The type to check
-  ///
-  /// Returns a [bool] indicating if the type is a primitive type
-
+  /// [type] is the type to check.
+  /// Returns `true` if the type is primitive, otherwise `false`.
   bool _isPrimitive(String type) {
     if (type.isEmpty) {
       throw const CodeGenerationException('Type cannot be empty');
@@ -300,12 +315,10 @@ class ModelGenerator {
     ].contains(type);
   }
 
-  /// Extracts the base type from a Dart type
+  /// Extracts the base type from a Dart type string.
   ///
-  /// [dartType] - The Dart type to extract the base type from
-  ///
-  /// Returns the base type as a [String]
-
+  /// [dartType] is the Dart type string (e.g., `List<User>?`).
+  /// Returns the base type as a [String] (e.g., 'User').
   String _extractBaseType(String dartType) {
     if (dartType.isEmpty) {
       throw const CodeGenerationException('Dart type cannot be empty');

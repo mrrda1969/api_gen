@@ -2,23 +2,37 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:api_gen/src/exception/exception.dart';
 import 'package:api_gen/src/generate/model_generator.dart';
-import 'package:api_gen/legacy/dart_model_generator.dart';
+
 import 'package:api_gen/src/logger/logger.dart';
+import 'package:api_gen/src/legacy/dart_model_generator.dart';
 import 'package:api_gen/src/result/result.dart';
 
-/// A high-level API client for programmatic use of api_gen
+/// A high-level API client for programmatic use of the api_gen package.
+///
+/// The [ApiGenClient] provides methods to generate Dart models from JSON schema files,
+/// schema maps, or JSON strings. It supports both the standard and legacy schema formats,
+/// and handles file reading, error handling, and logging.
+///
+/// Example usage:
+/// ```dart
+/// final client = ApiGenClient();
+/// final result = await client.generateFromFile('schema.json', 'lib/models');
+/// if (result.isSuccess) {
+///   print('Models generated successfully!');
+/// }
+/// ```
 class ApiGenClient {
   final Logger _logger;
 
   ApiGenClient() : _logger = Logger('ApiGenClient');
 
-  /// Generate models from a JSON schema file
+  /// Generates Dart models from a JSON schema file.
   ///
-  /// [schemaPath] - Path to the JSON schema file
-  /// [outputDir] - Directory where generated models will be saved
-  /// [useLegacyFormat] - Whether to use the legacy format (default: auto-detect)
+  /// [schemaPath] is the path to the JSON schema file.
+  /// [outputDir] is the directory where generated models will be saved.
+  /// [useLegacyFormat] specifies whether to use the legacy format (default: auto-detect).
   ///
-  /// Returns a [Result] indicating success or failure
+  /// Returns a [Result] indicating success or failure.
   Future<Result<void>> generateFromFile(
     String schemaPath,
     String outputDir, {
@@ -63,13 +77,13 @@ class ApiGenClient {
     }
   }
 
-  /// Generate models from a schema Map
+  /// Generates Dart models from a schema [Map].
   ///
-  /// [schema] - The schema as a [Map<String, dynamic>]
-  /// [outputDir] - Directory where generated models will be saved
-  /// [useLegacyFormat] - Whether to use the legacy format (default: auto-detect)
+  /// [schema] is the schema as a [Map<String, dynamic>].
+  /// [outputDir] is the directory where generated models will be saved.
+  /// [useLegacyFormat] specifies whether to use the legacy format (default: auto-detect).
   ///
-  /// Returns a [Result] indicating success or failure
+  /// Returns a [Result] indicating success or failure.
   Future<Result<void>> generateFromSchema(
     Map<String, dynamic> schema,
     String outputDir, {
@@ -121,13 +135,13 @@ class ApiGenClient {
     }
   }
 
-  /// Generate models from a JSON string
+  /// Generates Dart models from a JSON schema string.
   ///
-  /// [jsonString] - The schema as a JSON string
-  /// [outputDir] - Directory where generated models will be saved
-  /// [useLegacyFormat] - Whether to use the legacy format (default: auto-detect)
+  /// [jsonString] is the schema as a JSON string.
+  /// [outputDir] is the directory where generated models will be saved.
+  /// [useLegacyFormat] specifies whether to use the legacy format (default: auto-detect).
   ///
-  /// Returns a [Result] indicating success or failure
+  /// Returns a [Result] indicating success or failure.
   Future<Result<void>> generateFromJsonString(
     String jsonString,
     String outputDir, {
@@ -166,7 +180,7 @@ class ApiGenClient {
     }
   }
 
-  /// Read and parse a schema file with proper error handling
+  /// Reads and parses a schema file with proper error handling.
   Future<Map<String, dynamic>> _readSchemaFile(File schemaFile) async {
     try {
       final jsonString = await schemaFile.readAsString();
@@ -192,7 +206,7 @@ class ApiGenClient {
     }
   }
 
-  /// Detect if schema uses legacy format
+  /// Detects if the schema uses the legacy format.
   bool _isLegacyFormat(Map<String, dynamic> schema) {
     /// Legacy format detection logic
     return !schema.containsKey('\$defs') &&

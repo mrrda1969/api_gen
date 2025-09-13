@@ -1,18 +1,30 @@
 import 'dart:io';
-import 'package:api_gen/legacy/case_helpers.dart';
+import 'package:api_gen/src/legacy/case_helpers.dart';
 import 'package:api_gen/src/exception/exception.dart';
 import 'package:api_gen/src/logger/logger.dart';
 
+/// A generator for creating Dart model classes from legacy schema definitions.
+///
+/// The [DartModelGenerator] generates Dart model files from a legacy schema format.
+/// It handles schema parsing, error handling, and file generation, supporting nested models
+/// and various property types.
+///
+/// Example usage:
+/// ```dart
+/// final generator = DartModelGenerator('lib/models');
+/// generator.generate(schemaMap);
+/// ```
 class DartModelGenerator {
   final String outputDir;
   final Logger _logger;
 
   DartModelGenerator(this.outputDir) : _logger = Logger('DartModelGenerator');
 
-  /// Generate a model from a schema
+  /// Generates Dart model files from a legacy schema definition.
   ///
-  /// [schema] - The schema as a [Map<String, dynamic>]
-  ///
+  /// [schema] is the schema as a [Map<String, dynamic>].
+  /// Throws [SchemaValidationException], [FileOperationException], or [CodeGenerationException]
+  /// for various error conditions.
 
   void generate(Map<String, dynamic> schema) {
     try {
@@ -64,12 +76,12 @@ class DartModelGenerator {
     }
   }
 
-  /// Generates a model
+  /// Generates a Dart model file for a single model definition.
   ///
-  /// [className] - The name of the class
-  /// [fields] - The fields of the model
-  /// [schema] - The schema as a [Map<String, dynamic>]
-  ///
+  /// [className] is the name of the class.
+  /// [fields] are the fields of the model.
+  /// [schema] is the schema as a [Map<String, dynamic>].
+  /// Throws [CodeGenerationException] for errors in code generation.
 
   void _generateModel(
     String className,
@@ -93,7 +105,7 @@ class DartModelGenerator {
         try {
           final type = _getType(def, schema);
           if (!_isPrimitive(type) && type != capClassName) {
-            imports.add("import '${type.toLowerCase()}.dart';");
+            imports.add("import 'type.toLowerCase()}.dart';");
           }
         } catch (e) {
           throw CodeGenerationException('Failed to process field: $name', e);
@@ -201,10 +213,11 @@ class DartModelGenerator {
     }
   }
 
-  /// Saves a model file
+  /// Saves the generated Dart model file to disk.
   ///
-  /// [className] - The name of the class
-  /// [content] - The content of the file
+  /// [className] is the name of the class.
+  /// [content] is the Dart code to write.
+  /// Throws [FileOperationException] if writing fails.
 
   void _saveModelFile(String className, String content) {
     try {
@@ -229,12 +242,12 @@ class DartModelGenerator {
     }
   }
 
-  /// Extracts the type from a schema field
+  /// Extracts the type from a schema field definition.
   ///
-  /// [def] - The field definition
-  /// [schema] - The schema as a [Map<String, dynamic>]
-  ///
-  /// Returns the type as a [String]
+  /// [def] is the field definition.
+  /// [schema] is the schema as a [Map<String, dynamic>].
+  /// Returns the type as a [String].
+  /// Throws [CodeGenerationException] if extraction fails.
 
   String _getType(dynamic def, Map<String, dynamic> schema) {
     try {
@@ -265,11 +278,11 @@ class DartModelGenerator {
     }
   }
 
-  /// Check if a field is required
+  /// Checks if a field is required.
   ///
-  /// [def] - The field definition
-  ///
-  /// Returns a [bool] indicating if the field is required
+  /// [def] is the field definition.
+  /// Returns `true` if the field is required, otherwise `false`.
+  /// Throws [CodeGenerationException] if determination fails.
 
   bool _isRequired(dynamic def) {
     try {
@@ -288,12 +301,11 @@ class DartModelGenerator {
     }
   }
 
-  /// Check if a type is a primitive type
+  /// Checks if a type is a Dart primitive type.
   ///
-  /// [type] - The type to check
-  ///
-  /// Returns a [bool] indicating if the type is a primitive type
-  ///
+  /// [type] is the type to check.
+  /// Returns `true` if the type is primitive, otherwise `false`.
+  /// Throws [CodeGenerationException] if the type is empty.
 
   bool _isPrimitive(String type) {
     if (type.isEmpty) {

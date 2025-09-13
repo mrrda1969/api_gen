@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="api_gen API docs, for the Dart programming language.">
+  <title>api_gen - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/mrrda1969/api_gen">api_gen package</a></li>
+  </ol>
+  <div class="self-name">api_gen</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="api_gen">api_gen</h1>
+<p>A powerful Dart code generator for creating model classes (<code>fromJson</code> / <code>toJson</code>) from JSON schemas.<br>
+Skip boilerplate and speed up API integration in your Dart and Flutter projects with robust exception handling and multiple usage patterns.</p>
+<hr>
+<h2 id="-features">✨ Features</h2>
+<ul>
+<li>🚀 <strong>Multiple Generation Methods</strong>: CLI, programmatic API, and direct generator usage</li>
+<li>🔧 <strong>Robust Exception Handling</strong>: Comprehensive error handling with specific exception types</li>
+<li>📝 <strong>Auto-Generated Code</strong>: Automatic <code>fromJson</code> and <code>toJson</code> methods</li>
+<li>✅ <strong>Type Safety</strong>: Differentiates between <strong>required</strong> and <strong>optional</strong> fields</li>
+<li>🎯 <strong>Smart Type Mapping</strong>: Auto-capitalizes class names and normalizes Dart types</li>
+<li>🔗 <strong>Nested Models</strong>: Supports nested models with correct imports</li>
+<li>📁 <strong>Auto Directory Creation</strong>: Output directory is created automatically</li>
+<li>🛡️ <strong>Input Validation</strong>: Validates schemas, file paths, and JSON format</li>
+<li>📊 <strong>Multiple Schema Formats</strong>: Supports both legacy and standard JSON Schema formats</li>
+</ul>
+<hr>
+<h2 id="-getting-started">🚀 Getting Started</h2>
+<h3 id="1-installation">1. Installation</h3>
+<p>Add <code>api_gen</code> to your <code>pubspec.yaml</code>:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  api_gen: ^0.0.4
+</code></pre>
+<p>Or activate globally to use as a CLI:</p>
+<pre class="language-sh"><code class="language-sh">dart pub global activate api_gen
+</code></pre>
+<h3 id="2-usage-options">2. Usage Options</h3>
+<h2 id="-cli-usage-recommended-for-quick-generation">🖥️ CLI Usage (Recommended for Quick Generation)</h2>
+<pre class="language-sh"><code class="language-sh"># Basic usage
+api_gen --schema api.json --dir lib/models
+
+# Short form
+api_gen -s api.json -d lib/models
+</code></pre>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--schema</code> / <code>-s</code>: Path to schema JSON file (required)</li>
+<li><code>--dir</code> / <code>-d</code>: Output directory for generated models (default: lib/models)</li>
+</ul>
+<h2 id="-programmatic-usage-recommended-for-integration">🧑‍💻 Programmatic Usage (Recommended for Integration)</h2>
+<h3 id="using-the-high-level-apigenclient">Using the High-Level ApiGenClient</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:api_gen/api_gen.dart';
+
+void main() async {
+  final client = ApiGenClient();
+
+  // Generate from file
+  final result = await client.generateFromFile('api.json', 'lib/models');
+
+  if (result.isSuccessful) {
+    print('✅ Models generated successfully!');
+  } else {
+    final failure = result as Failure&lt;void&gt;;
+    print('❌ Error: ${failure.exception}');
+  }
+}
+</code></pre>
+<h3 id="available-methods">Available Methods</h3>
+<pre class="language-dart"><code class="language-dart">// 1. Generate from file
+await client.generateFromFile('schema.json', 'lib/models');
+
+// 2. Generate from schema Map
+final schema = {'User': {'id': 'String', 'name': 'String'}};
+await client.generateFromSchema(schema, 'lib/models');
+
+// 3. Generate from JSON string
+const jsonString = '{"Product": {"id": "String"}}';
+await client.generateFromJsonString(jsonString, 'lib/models');
+</code></pre>
+<h2 id="-schema-formats">📝 Schema Formats</h2>
+<h3 id="legacy-format-simple">Legacy Format (Simple)</h3>
+<pre class="language-json"><code class="language-json">{
+  "user": {
+    "id": "int",
+    "name": "String",
+    "email": { "type": "String", "required": false },
+    "profile": { "type": "Profile", "required": true }
+  },
+  "profile": {
+    "age": "int",
+    "bio": { "type": "String", "required": false }
+  }
+}
+</code></pre>
+<h3 id="standard-json-schema-format">Standard JSON Schema Format</h3>
+<pre class="language-json"><code class="language-json">{
+  "$defs": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["id", "name"]
+    }
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-exception-handling">🛡️ Exception Handling</h2>
+<p>The package provides comprehensive exception handling with specific exception types:</p>
+<pre class="language-dart"><code class="language-dart">final result = await client.generateFromFile('schema.json', 'models');
+
+if (result.isFailure) {
+  final failure = result as Failure&lt;void&gt;;
+  final exception = failure.exception;
+
+  if (exception is FileOperationException) {
+    print('File error: ${exception.message}');
+  } else if (exception is SchemaValidationException) {
+    print('Schema error: ${exception.message}');
+  } else if (exception is CodeGenerationException) {
+    print('Generation error: ${exception.message}');
+  } else if (exception is JsonParsingException) {
+    print('JSON error: ${exception.message}');
+  }
+}
+</code></pre>
+<p><strong>Exception Types:</strong></p>
+<ul>
+<li><code>FileOperationException</code>: File I/O errors (file not found, permission denied, etc.)</li>
+<li><code>SchemaValidationException</code>: Invalid or empty schemas</li>
+<li><code>CodeGenerationException</code>: Model generation errors</li>
+<li><code>JsonParsingException</code>: JSON parsing errors</li>
+</ul>
+<hr>
+<h2 id="-examples">📚 Examples</h2>
+<p>See the <a href="example/"><code>example/</code></a> directory for comprehensive examples:</p>
+<ul>
+<li><strong><code>main.dart</code></strong> - Basic usage with ApiGenClient</li>
+<li><strong><code>comprehensive_example.dart</code></strong> - All usage patterns and error handling</li>
+<li><strong><code>usage_guide.dart</code></strong> - Step-by-step guide</li>
+<li><strong><code>API_USAGE.md</code></strong> - Detailed API documentation</li>
+</ul>
+<h3 id="quick-example">Quick Example</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:api_gen/api_gen.dart';
+
+void main() async {
+  final client = ApiGenClient();
+
+  // Generate models with proper error handling
+  final result = await client.generateFromFile('api.json', 'lib/models');
+
+  if (result.isSuccessful) {
+    print('✅ Models generated successfully!');
+  } else {
+    final failure = result as Failure&lt;void&gt;;
+    print('❌ Error: ${failure.exception}');
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-advanced-usage">🔧 Advanced Usage</h2>
+<h3 id="direct-generator-usage">Direct Generator Usage</h3>
+<p>For more control, you can use the generators directly:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:api_gen/api_gen.dart';
+
+// For legacy format
+final legacyGenerator = DartModelGenerator('lib/models');
+legacyGenerator.generate(schema);
+
+// For standard JSON Schema format
+final generator = ModelGenerator('lib/models');
+final result = generator.generate(schema);
+</code></pre>
+<h3 id="custom-error-handling">Custom Error Handling</h3>
+<pre class="language-dart"><code class="language-dart">Future&lt;void&gt; generateWithRetry(String schemaPath, String outputDir) async {
+  final client = ApiGenClient();
+
+  for (int attempt = 1; attempt &lt;= 3; attempt++) {
+    final result = await client.generateFromFile(schemaPath, outputDir);
+
+    if (result.isSuccessful) return;
+
+    if (attempt &lt; 3) {
+      print('Attempt $attempt failed, retrying...');
+      await Future.delayed(Duration(seconds: attempt));
+    } else {
+      final failure = result as Failure&lt;void&gt;;
+      throw Exception('Failed after 3 attempts: ${failure.exception}');
+    }
+  }
+}
+</code></pre>
+<hr>
+<h2 id="-changelog">📋 Changelog</h2>
+<h3 id="v004">v0.0.4</h3>
+<ul>
+<li>✨ Added <code>ApiGenClient</code> for high-level programmatic usage</li>
+<li>🛡️ Comprehensive exception handling with specific exception types</li>
+<li>🔧 Enhanced input validation and error recovery</li>
+<li>📚 Multiple usage examples and comprehensive documentation</li>
+<li>🚀 Support for both legacy and standard JSON Schema formats</li>
+<li>📝 Improved CLI error messages and logging</li>
+</ul>
+<h3 id="v003">v0.0.3</h3>
+<ul>
+<li>Support for nested models</li>
+<li>CLI global executable support</li>
+</ul>
+<hr>
+<h2 id="-contributing">🤝 Contributing</h2>
+<p>Contributions are welcome! Please open issues or submit pull requests.</p>
+<hr>
+<h2 id="-license">📄 License</h2>
+<p>This project is licensed under the MIT License.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="api_gen">
+  <span class="name"><a href="api_gen/">api_gen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/mrrda1969/api_gen">api_gen package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">api_gen</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="api_gen/">api_gen</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    api_gen
+      0.0.4
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
