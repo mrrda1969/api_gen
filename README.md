@@ -1,27 +1,12 @@
 # api_gen
 
-A powerful Dart code generator for creating model classes (`fromJson` / `toJson`) from JSON schemas.  
-Skip boilerplate and speed up API integration in your Dart and Flutter projects with robust exception handling and multiple usage patterns.
+A Dart code generator for creating model classes with `fromJson` and `toJson` methods from JSON schemas. Streamline API integration in Dart and Flutter projects with robust exception handling and flexible usage patterns.
 
 ---
 
-## ✨ Features
+## Getting Started
 
-- 🚀 **Multiple Generation Methods**: CLI, programmatic API, and direct generator usage
-- 🔧 **Robust Exception Handling**: Comprehensive error handling with specific exception types
-- 📝 **Auto-Generated Code**: Automatic `fromJson` and `toJson` methods
-- ✅ **Type Safety**: Differentiates between **required** and **optional** fields
-- 🎯 **Smart Type Mapping**: Auto-capitalizes class names and normalizes Dart types
-- 🔗 **Nested Models**: Supports nested models with correct imports
-- 📁 **Auto Directory Creation**: Output directory is created automatically
-- 🛡️ **Input Validation**: Validates schemas, file paths, and JSON format
-- 📊 **Multiple Schema Formats**: Supports both legacy and standard JSON Schema formats
-
----
-
-## 🚀 Getting Started
-
-### 1. Installation
+### Installation
 
 Add `api_gen` to your `pubspec.yaml`:
 
@@ -36,9 +21,9 @@ Or activate globally to use as a CLI:
 dart pub global activate api_gen
 ```
 
-### 2. Usage Options
+### Usage Options
 
-## 🖥️ CLI Usage (Recommended for Quick Generation)
+## CLI Usage (Recommended for Quick Generation)
 
 ```sh
 # Basic usage
@@ -53,7 +38,7 @@ api_gen -s api.json -d lib/models
 - `--schema` / `-s`: Path to schema JSON file (required)
 - `--dir` / `-d`: Output directory for generated models (default: lib/models)
 
-## 🧑‍💻 Programmatic Usage (Recommended for Integration)
+## Programmatic Usage (Recommended for Integration)
 
 ### Using the High-Level ApiGenClient
 
@@ -67,10 +52,10 @@ void main() async {
   final result = await client.generateFromFile('api.json', 'lib/models');
 
   if (result.isSuccessful) {
-    print('✅ Models generated successfully!');
+    print('Models generated successfully');
   } else {
     final failure = result as Failure<void>;
-    print('❌ Error: ${failure.exception}');
+    print('Error: ${failure.exception}');
   }
 }
 ```
@@ -90,7 +75,7 @@ const jsonString = '{"Product": {"id": "String"}}';
 await client.generateFromJsonString(jsonString, 'lib/models');
 ```
 
-## 📝 Schema Formats
+## Schema Formats
 
 ### Legacy Format (Simple)
 
@@ -129,7 +114,7 @@ await client.generateFromJsonString(jsonString, 'lib/models');
 
 ---
 
-## 🛡️ Exception Handling
+## Exception Handling
 
 The package provides comprehensive exception handling with specific exception types:
 
@@ -161,9 +146,9 @@ if (result.isFailure) {
 
 ---
 
-## 📚 Examples
+## Examples
 
-See the [`example/`](example/) directory for comprehensive examples:
+See the `example/` directory for comprehensive examples:
 
 - **`main.dart`** - Basic usage with ApiGenClient
 - **`comprehensive_example.dart`** - All usage patterns and error handling
@@ -182,17 +167,17 @@ void main() async {
   final result = await client.generateFromFile('api.json', 'lib/models');
 
   if (result.isSuccessful) {
-    print('✅ Models generated successfully!');
+    print('Models generated successfully');
   } else {
     final failure = result as Failure<void>;
-    print('❌ Error: ${failure.exception}');
+    print('Error: ${failure.exception}');
   }
 }
 ```
 
 ---
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Direct Generator Usage
 
@@ -234,16 +219,16 @@ Future<void> generateWithRetry(String schemaPath, String outputDir) async {
 
 ---
 
-## 📋 Changelog
+## Changelog
 
 ### v0.0.4
 
-- ✨ Added `ApiGenClient` for high-level programmatic usage
-- 🛡️ Comprehensive exception handling with specific exception types
-- 🔧 Enhanced input validation and error recovery
-- 📚 Multiple usage examples and comprehensive documentation
-- 🚀 Support for both legacy and standard JSON Schema formats
-- 📝 Improved CLI error messages and logging
+- Added `ApiGenClient` for high-level programmatic usage
+- Comprehensive exception handling with specific exception types
+- Enhanced input validation and error recovery
+- Multiple usage examples and comprehensive documentation
+- Support for both legacy and standard JSON Schema formats
+- Improved CLI error messages and logging
 
 ### v0.0.3
 
@@ -252,12 +237,12 @@ Future<void> generateWithRetry(String schemaPath, String outputDir) async {
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please open issues or submit pull requests.
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://github.com/mrrda1969/api_gen?tab=MIT-1-ov-file#).
