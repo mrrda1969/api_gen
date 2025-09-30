@@ -12,7 +12,7 @@ Add `api_gen` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  api_gen: ^0.0.4+2
+  api_gen: ^0.0.5
 ```
 
 Or activate globally to use as a CLI:
