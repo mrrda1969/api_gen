@@ -12,7 +12,7 @@ Add `api_gen` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  api_gen: ^0.0.4
+  api_gen: ^0.0.4+2
 ```
 
 Or activate globally to use as a CLI:
@@ -27,10 +27,10 @@ dart pub global activate api_gen
 
 ```sh
 # Basic usage
-api_gen --schema api.json --dir lib/models
+api_gen generate --schema api.json --dir lib/models
 
 # Short form
-api_gen -s api.json -d lib/models
+api_gen generate -s api.json -d lib/models
 ```
 
 **Options:**
@@ -221,19 +221,7 @@ Future<void> generateWithRetry(String schemaPath, String outputDir) async {
 
 ## Changelog
 
-### v0.0.4
-
-- Added `ApiGenClient` for high-level programmatic usage
-- Comprehensive exception handling with specific exception types
-- Enhanced input validation and error recovery
-- Multiple usage examples and comprehensive documentation
-- Support for both legacy and standard JSON Schema formats
-- Improved CLI error messages and logging
-
-### v0.0.3
-
-- Support for nested models
-- CLI global executable support
+You can read the changes for [api_gen](https://pub.dev/packages/api_gen) from this [Changelog](CHANGELOG.md).
 
 ---
 

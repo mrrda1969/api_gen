@@ -1,3 +1,10 @@
+# Changelog
+
+## 0.0.4+2
+
+- added `generate` command to the package's CLI.
+- improved [README](https://github.com/mrrda1969/api_gen?tab=readme-ov-file#) file.
+
 ## 0.0.4+1
 
 - updated dart doc comments on all files
